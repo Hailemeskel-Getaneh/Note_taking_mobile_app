@@ -5,20 +5,19 @@ import {
 
 // Function to get dynamic greeting based on the Ethiopian time (GMT +3)
 const getGreeting = () => {
-  // Get the current time in UTC and add 3 hours for Ethiopian time (GMT+3)
   const ethiopianTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000); // Adding 3 hours
   const hour = ethiopianTime.getHours();
   
-  // Determine the greeting based on the time of day in Ethiopia
-  if (hour < 6) return "Good Morning"; // Early morning (6 AM)
-  if (hour < 12) return "Good Morning"; // Morning (6 AM - 12 PM)
-  if (hour < 18) return "Good Afternoon"; // Afternoon (12 PM - 6 PM)
-  return "Good Evening"; // Evening (6 PM - Midnight)
+  if (hour < 6) return "Good Morning"; 
+  if (hour < 12) return "Good Morning"; 
+  if (hour < 18) return "Good Afternoon"; 
+  return "Good Evening"; 
 };
 
 export default function HomeScreen({ navigation }) {
   const [greeting, setGreeting] = useState(getGreeting());
-  const [fadeAnim] = useState(new Animated.Value(0)); // Initial opacity
+  const [fadeAnim] = useState(new Animated.Value(0)); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication state
 
   // Fade-in animation for greeting message
   useEffect(() => {
@@ -28,6 +27,17 @@ export default function HomeScreen({ navigation }) {
       useNativeDriver: true,
     }).start();
   }, [fadeAnim]);
+
+  // Function to handle "Go to Notes" button click
+  const handleGoToNotes = () => {
+    if (isAuthenticated) {
+      // If authenticated, navigate to Note Screen
+      navigation.navigate("Note");
+    } else {
+      // If not authenticated, navigate to SignIn/SignUp Screen
+      navigation.navigate("SignIn");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +51,7 @@ export default function HomeScreen({ navigation }) {
       <Image style={styles.homeImage} source={require("../images/homeIMage.jpg")} />
 
       {/* Action Buttons */}
-      <TouchableOpacity onPress={() => navigation.navigate("Note")} style={styles.button}>
+      <TouchableOpacity onPress={handleGoToNotes} style={styles.button}>
         <Text style={styles.buttonText}>Go to Notes</Text>
       </TouchableOpacity>
 
@@ -109,20 +119,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 30,
   },
- // Updated button style
-button: {
-  marginTop: 20,
-  paddingVertical: 15,
-  paddingHorizontal: 40,
-  backgroundColor: "#4A90E2", // Changed color to match header/footer
-  borderRadius: 10,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.3,
-  shadowRadius: 5, // Adjusted shadow to make it more consistent
-  elevation: 5,
-},
-
+  button: {
+    marginTop: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    backgroundColor: "#4A90E2", 
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5, 
+    elevation: 5,
+  },
   buttonText: {
     color: "white",
     fontSize: 20,
@@ -143,7 +151,6 @@ button: {
   footer: {
     width: "100%",
     padding: 10,
-    
     backgroundColor: "#4A90E2",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
