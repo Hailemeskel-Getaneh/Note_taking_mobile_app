@@ -80,29 +80,29 @@ export default function NoteScreen({ navigation }) {
     setEditIndex(null);
   };
 
-  const deleteNote = (index) => {
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this note?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel", // "Cancel" button
+const deleteNote = (index) => {
+  Alert.alert(
+    "Confirm Deletion",
+    "Are you sure you want to delete this note?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel", // "Cancel" button
+      },
+      {
+        text: "Delete",
+        onPress: () => {
+          const updatedNotes = notes.filter((_, i) => i !== index);
+          setNotes(updatedNotes);
+          saveNotes(updatedNotes);
         },
-        {
-          text: "Delete",
-          onPress: () => {
-            const updatedNotes = notes.filter((_, i) => i !== index);
-            setNotes(updatedNotes);
-            saveNotes(updatedNotes);
-          },
-          style: "destructive", // "Delete" button with red style
-        },
-      ],
-      { cancelable: true }
-    );
-  };
-  
+        style: "destructive", // "Delete" button with red style
+      },
+    ],
+    { cancelable: true }
+  );
+};
+
 
   const filterNotes = () => {
     let filtered = notes;
@@ -118,15 +118,10 @@ export default function NoteScreen({ navigation }) {
     }
     setFilteredNotes(filtered);
   };
-  const togglePriority = (index) => {
-    const updatedNotes = [...notes];
-    updatedNotes[index].priority = !updatedNotes[index].priority;
-    setNotes(updatedNotes);
-    saveNotes(updatedNotes);
+
+  const togglePriority = () => {
+    setPriority(!priority);
   };
-  
-  
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -149,38 +144,30 @@ export default function NoteScreen({ navigation }) {
       </View>
 
       <ScrollView style={styles.notesContainer}>
-      // Inside ScrollView where notes are rendered:
-  {filteredNotes.length === 0 ? (
-    <Text style={styles.noNotesText}>No notes found.</Text>
-  ) : (
-    filteredNotes.map((note, index) => (
-      <View key={index} style={[styles.noteItem, note.priority && styles.priorityNote]}>
-        <View style={styles.noteContent}>
-          <Text style={styles.noteDate}>{note.date}</Text>
-          <TouchableOpacity onPress={() => setExpandedNote(expandedNote === index ? null : index)}>
-            <Text style={styles.noteText}>
-              {expandedNote === index ? note.text : note.text.length > 50 ? note.text.substring(0, 50) + "..." : note.text}
-            </Text>
-          </TouchableOpacity>
-        </View>
-  
-        <TouchableOpacity onPress={() => editNote(index)} style={styles.actionButton}>
-          <Feather name="edit" size={18} color="white" />
-        </TouchableOpacity>
-  
-        <TouchableOpacity onPress={() => deleteNote(index)} style={[styles.actionButton, styles.deleteButton]}>
-          <Feather name="trash-2" size={18} color="white" />
-        </TouchableOpacity>
-  
-        {/* Toggle priority button for each note */}
-        <TouchableOpacity onPress={() => togglePriority(index)} style={styles.priorityButton}>
-          <Text style={styles.priorityText}>
-            {note.priority ? "Remove Priority" : "Set as Priority"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    ))
-  )}
+        {filteredNotes.length === 0 ? (
+          <Text style={styles.noNotesText}>No notes found.</Text>
+        ) : (
+          filteredNotes.map((note, index) => (
+            <View key={index} style={[styles.noteItem, note.priority && styles.priorityNote]}>
+              <View style={styles.noteContent}>
+                <Text style={styles.noteDate}>{note.date}</Text>
+                <TouchableOpacity onPress={() => setExpandedNote(expandedNote === index ? null : index)}>
+                  <Text style={styles.noteText}>
+                    {expandedNote === index ? note.text : note.text.length > 50 ? note.text.substring(0, 50) + "..." : note.text}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity onPress={() => editNote(index)} style={styles.actionButton}>
+                <Feather name="edit" size={18} color="white" />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => deleteNote(index)} style={[styles.actionButton, styles.deleteButton]}>
+                <Feather name="trash-2" size={18} color="white" />
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
       </ScrollView>
 
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -265,14 +252,14 @@ const styles = StyleSheet.create({
   noteItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#BBDEFB",
+    backgroundColor: "#BFCFE7",
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
   },
 
   priorityNote: {
-    borderColor: "#FF7043",
+    borderColor: "#F26B0F",
     borderWidth: 2,
   },
 
@@ -293,7 +280,7 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    backgroundColor: "#B771E5",
+    backgroundColor: "#49108B",
     padding: 8,
     borderRadius: 5,
     marginLeft: 5,
@@ -329,10 +316,11 @@ const styles = StyleSheet.create({
   },
 
   addButton: {
-    backgroundColor: "#B771E5",
+    backgroundColor: "#49108B",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 50,
+    marginLeft: 10,
   },
 
   priorityButton: {
