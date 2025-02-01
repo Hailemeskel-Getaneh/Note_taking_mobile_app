@@ -10,6 +10,7 @@ const AboutScreen = () => {
           source={require('../images/aboutImage.jpg')} // Make sure to add an image for this
           style={styles.aboutImage}
         />
+        
 
         {/* Title */}
         <Text style={styles.title}>About Hamar Notes</Text>
