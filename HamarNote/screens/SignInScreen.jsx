@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { 
-  View, Text, TextInput, TouchableOpacity, StyleSheet, Alert 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from '@expo/vector-icons'; 
 
 export default function SignInScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);  // Track password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleSignIn = async () => {
     const storedUsername = await AsyncStorage.getItem("username");
@@ -23,31 +30,36 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Image source={require("../images/signInImage.png")} style={styles.logo} />
       <Text style={styles.title}>Sign In</Text>
-      <TextInput 
+      <TextInput
         style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
       <View style={styles.passwordContainer}>
-        <TextInput 
-          style={styles.input}
+        <TextInput
+          style={styles.inputPassword}
           placeholder="Password"
-          secureTextEntry={!passwordVisible}  // Toggle password visibility
+          secureTextEntry={!passwordVisible}
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
-          <Text style={styles.eyeText}>{passwordVisible ? 'Hide' : 'Show'}</Text>
+        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+          <Ionicons
+            name={passwordVisible ? "eye-off" : "eye"}
+            size={24}
+            color="#4A90E2"
+            style={styles.eyeIcon}
+          />
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleSignIn} style={styles.button}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("SignUp")} style={styles.link}>
-        <Text style={styles.linkText}>Don't have an account? </Text>
-        <Text style={styles.signUpButton}>Sign Up</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <Text style={styles.linkText}>Don't have an account? <Text style={styles.signUpButton}>Sign Up</Text></Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,58 +73,69 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f4f4f4",
   },
+  logo: {
+    width: "75%",
+    height: 220,
+    marginBottom: 20,
+    borderRadius: 60,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
+    color: "#333",
   },
   input: {
     width: "100%",
-    padding: 10,
+    padding: 12,
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  inputPassword: {
+    flex: 1,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    backgroundColor: "white",
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  eyeIcon: {
+    marginLeft: 10,
   },
   button: {
     width: "100%",
     padding: 15,
-    backgroundColor: "#4A90E2",
-    borderRadius: 5,
+    backgroundColor: "#7360DF",
+    borderRadius: 10,
     alignItems: "center",
+    marginTop: 10,
   },
   buttonText: {
     color: "#fff",
     fontSize: 18,
-  },
-  link: {
-    marginTop: 10,
+    fontWeight: "bold",
   },
   linkText: {
     color: "black",
     fontSize: 16,
-    padding: 10,
+    marginTop: 15,
   },
   signUpButton: {
-    backgroundColor: "#4A90E2",
-    fontSize: 18,
-    color: 'white',
-    marginLeft: '50%',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-  },
-  passwordContainer: {
-    width: "100%",
-    flexDirection: "row",  // To align the text input and eye icon
-    alignItems: "center", 
-    justifyContent: "space-between", 
-  },
-  eyeIcon: {
-    paddingLeft: 10,
-  },
-  eyeText: {
-    fontSize: 16,
-    color: "#4A90E2",
+    color: "#7360DF",
+    fontWeight: "bold",
   },
 });

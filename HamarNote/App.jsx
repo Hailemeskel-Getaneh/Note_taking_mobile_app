@@ -56,7 +56,7 @@ export default function App() {
           component={SignInScreen}
           options={{
             title: "Sign In",
-            headerStyle: { backgroundColor: '#4A90E2' },
+            headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
         />
@@ -67,7 +67,7 @@ export default function App() {
           component={SignUpScreen}
           options={{
             title: "Sign Up",
-            headerStyle: { backgroundColor: '#4A90E2' },
+            headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
         />

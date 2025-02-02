@@ -1,29 +1,52 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, Linking, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
+
+// Enable LayoutAnimation on Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const AboutScreen = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {/* Optional Image to make it more visually engaging */}
+      <ScrollView contentContainerStyle={styles.content}>
         <Image
-          source={require('../images/aboutImage.jpg')} // Make sure to add an image for this
+          source={require('../images/aboutImage.jpg')}
           style={styles.aboutImage}
         />
-        
-
-        {/* Title */}
         <Text style={styles.title}>About Hamar Notes</Text>
-
-        {/* Description Text */}
         <Text style={styles.text}>
           Hamar Notes is an innovative note-taking app designed to simplify the process of organizing your thoughts and ideas.
-          It allows users to create, update, and manage their notes with ease, all while keeping things simple and intuitive.
         </Text>
-        <Text style={styles.text}>
-          Whether you're a student, professional, or someone who just loves to stay organized, Hamar Notes is perfect for everyone.
-        </Text>
-      </View>
+        <TouchableOpacity onPress={toggleExpand} style={styles.accordionButton}>
+          <Text style={styles.accordionButtonText}>
+            {expanded ? 'Read Less' : 'Read More'}
+          </Text>
+        </TouchableOpacity>
+        {expanded && (
+          <View style={styles.accordionContent}>
+            <Text style={styles.text}>
+              It allows users to create, update, and manage their notes with ease, all while keeping things simple and intuitive.
+            </Text>
+            <Text style={styles.text}>
+              Whether you're a student, professional, or someone who just loves to stay organized, Hamar Notes is perfect for everyone.
+            </Text>
+          </View>
+        )}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => Linking.openURL('https://hailemeskel.netlify.app/')}
+        >
+          <Text style={styles.buttonText}>Visit Our Website</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -31,35 +54,52 @@ const AboutScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9FC', // Light background color
-    padding: 20,
+    backgroundColor: '#F7F9FC',
   },
   content: {
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30, // Add top margin to position content nicely
+    padding: 20,
   },
   aboutImage: {
-    width: '100%', // Image width covering full screen width
-    height: 200, // Adjust image height for a nice header effect
-    borderRadius: 10, // Rounded corners
-    marginBottom: 20, // Space between the image and text
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 15, // Space below the title
-    fontFamily: 'Arial', // Optional: Choose a clean font
+    marginBottom: 15,
   },
   text: {
     fontSize: 18,
     color: '#555',
     textAlign: 'left',
-    marginVertical: 15,
-    lineHeight: 26, // Increase line spacing for readability
-    fontFamily: 'Arial', // Optional: Make sure text is clean and readable
+    marginVertical: 10,
+    lineHeight: 26,
+  },
+  accordionButton: {
+    marginVertical: 10,
+  },
+  accordionButtonText: {
+    fontSize: 18,
+    color: '#4A90E2',
+  },
+  accordionContent: {
+    marginTop: 10,
+  },
+  button: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#4A90E2',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });
 

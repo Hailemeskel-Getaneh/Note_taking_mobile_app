@@ -48,7 +48,7 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {/* Hero Image */}
-      <Image style={styles.homeImage} source={require("../images/homeIMage.jpg")} />
+      <Image style={styles.homeImage} source={require("../images/image1.jpg")} />
 
       {/* Action Buttons */}
       <TouchableOpacity onPress={handleGoToNotes} style={styles.button}>
@@ -65,12 +65,12 @@ export default function HomeScreen({ navigation }) {
       {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.footerLinks}>
-          <TouchableOpacity onPress={() => navigation.navigate("About")} style={styles.footerButton}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("About")} style={styles.footerButton}>
             <Text style={styles.footerText}>About</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Contact")} style={styles.footerButton}>
             <Text style={styles.footerText}>Contact</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Text style={styles.footerText}>© 2025 Hamar Notes</Text>
       </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F9FC",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 10,
   },
   header: {
     width: "100%",
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     marginTop: 70,
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#7360DF",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: "#000",
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    backgroundColor: "#4A90E2", 
+    backgroundColor: "#7360DF", 
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -151,7 +151,8 @@ const styles = StyleSheet.create({
   footer: {
     width: "100%",
     padding: 10,
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#7360DF",
+
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     justifyContent: "center",

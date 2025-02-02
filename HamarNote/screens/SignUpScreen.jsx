@@ -39,9 +39,8 @@ export default function SignUpScreen({ navigation }) {
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("SignIn")} style={styles.link}>
-      <Text style={styles.linkText}>Already have an account? </Text>
+     <Text style={styles.linkText}>Already have an account? <Text style={styles.signInButton}>Sign in</Text></Text>
 
-        <Text style={styles.signInButton}>Sign In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     padding: 15,
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#7360DF",
     borderRadius: 5,
     alignItems: "center",
   },
@@ -83,17 +82,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   linkText: {
-    color: "#4A90E2",
+    color: "black",
     fontSize: 16,
   },
 
   signInButton: {
-    backgroundColor: "#4A90E2",
+    // backgroundColor: "#7360DF",
     fontSize: 18,
     color: 'white',
     marginLeft: '50%',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
+    textDecorationLine: 'underline',
   },
 });
