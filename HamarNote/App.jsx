@@ -34,7 +34,7 @@ export default function App() {
           component={AboutScreen}
           options={{
             title: "About Us", // Optional: Customize the header title
-            headerStyle: { backgroundColor: '#4A90E2' },
+            headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
         />
@@ -45,7 +45,7 @@ export default function App() {
           component={ContactScreen}
           options={{
             title: "Contact Us", // Optional: Customize the header title
-            headerStyle: { backgroundColor: '#4A90E2' },
+            headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
         />

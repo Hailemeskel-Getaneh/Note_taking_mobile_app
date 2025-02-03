@@ -40,7 +40,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     marginBottom: 10,
-    color:'black'
+    color: "black"
   },
   searchIcon: {
     marginRight: 10
@@ -74,6 +74,12 @@ export default StyleSheet.create({
   },
   activeCategoryText: {
     color: "#fff"
+  },
+  // New style for vertical dots (no border or background)
+  verticalDots: {
+    paddingVertical: 8,
+    paddingHorizontal: 12
+    // No border or background styles here
   },
   notesContainer: {
     flex: 1,
@@ -132,12 +138,13 @@ export default StyleSheet.create({
   timeContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 1,
+    borderWidth: 0.41,
     borderColor: "#888",
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
-    marginTop: 5
+    marginTop: 5,
+    width: 200
   },
   timeText: {
     fontSize: 12,
@@ -165,11 +172,11 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 20,
-    color: "white",
+    color: "white"
   },
-  addNoteText:{
+  addNoteText: {
     color: "white",
-    fontSize: 20,
+    fontSize: 20
   },
   addModeContainer: {
     position: "absolute",
@@ -227,14 +234,13 @@ export default StyleSheet.create({
   },
   actionMenu: {
     position: "absolute",
-    bottom: 10,
-    right: 0,
     backgroundColor: "#FFF",
-    padding: 40,
-    paddingLeft: 20,
-    borderTopLeftRadius: 20,
+    padding: 10,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ddd"
+    borderColor: "#ddd",
+    width: 200,
+    paddingLeft: 20
   },
   actionMenuItem: {
     flexDirection: "row",
@@ -248,38 +254,39 @@ export default StyleSheet.create({
   },
   modalOverlay: {
     position: "absolute",
-    top: 0,
-    right: 0,
+    top: 90,
+    right: 10,
     bottom: 0,
-    left: 0
+    width: "50%"
   },
   hamburgerModal: {
     position: "absolute",
-    bottom: 0,
+    top: 0,
     left: 0,
     right: 0,
     backgroundColor: "#FFF",
-    padding: 20,
+    padding: 10,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopRightRadius: 20,
+    height: "40%"
   },
   modalItem: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 12,
-    backgroundColor: "#1F4529",
     paddingLeft: 40,
-    marginBottom: 5
+    marginBottom: 1
   },
   modalItemText: {
     fontSize: 16,
     fontFamily: "sans-serif-medium",
-    color: "#fff",
+    color: "black",
     marginLeft: 8
   },
   expandedContainer: {
     flex: 1,
-    padding: 15
+    padding: 15,
+    marginBottom: 40
   },
   expandedTextInput: {
     flex: 1,
@@ -290,7 +297,8 @@ export default StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 10,
-    textAlignVertical: "top"
+    textAlignVertical: "top",
+    marginBottom: 40
   },
   expandedActions: {
     flexDirection: "row",
