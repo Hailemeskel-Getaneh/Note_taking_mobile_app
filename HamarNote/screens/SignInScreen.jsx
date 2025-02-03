@@ -30,7 +30,7 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../images/signInImage.png")} style={styles.logo} />
+      <Image source={require("../images/mobileLoginImage.png")} style={styles.logo} />
       <Text style={styles.title}>Sign In</Text>
       <TextInput
         style={styles.input}
@@ -92,15 +92,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    backgroundColor: "white",
   },
   inputPassword: {
     flex: 1,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    backgroundColor: "white",
+   
   },
   passwordContainer: {
     width: "100%",
@@ -109,7 +104,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    backgroundColor: "white",
     paddingHorizontal: 10,
     marginBottom: 15,
   },

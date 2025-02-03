@@ -4,12 +4,12 @@ import { Ionicons } from '@expo/vector-icons'; // To use icons (make sure to ins
 
 const ContactScreen = () => {
   const openEmail = () => Linking.openURL('mailto:Hamar1627@gmail.com');
-  const openPhone = () => Linking.openURL('tel:+251956b319463');
+  const openPhone = () => Linking.openURL('tel:+251956319463');
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Contact Us</Text>
+        <Text style={styles.title}>Contact Us </Text>
         <Text style={styles.text}>
           For any inquiries, feedback, or support, feel free to reach out to us!
         </Text>

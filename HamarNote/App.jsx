@@ -7,6 +7,7 @@ import AboutScreen from './screens/AboutScreen'; // Import AboutScreen
 import ContactScreen from './screens/ContactScreen'; // Import ContactScreen
 import SignInScreen from './screens/SignInScreen'; // Import SignInScreen
 import SignUpScreen from './screens/SignUpScreen'; // Import SignUpScreen
+import SettingsScreen from './screens/SettingScreen'
 
 const Stack = createStackNavigator();
 
@@ -70,6 +71,18 @@ export default function App() {
             headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
+        />
+
+        <Stack.Screen
+          name="NoteScreen"
+          component={NoteScreen}
+          options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

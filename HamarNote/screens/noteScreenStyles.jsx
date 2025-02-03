@@ -70,16 +70,15 @@ export default StyleSheet.create({
     fontFamily: "sans-serif-medium"
   },
   activeCategoryButton: {
-    backgroundColor: "#7360DF"
+    backgroundColor: "#7360DF",
   },
   activeCategoryText: {
-    color: "#fff"
+    color:'white'
+
   },
-  // New style for vertical dots (no border or background)
   verticalDots: {
     paddingVertical: 8,
     paddingHorizontal: 12
-    // No border or background styles here
   },
   notesContainer: {
     flex: 1,
@@ -97,7 +96,9 @@ export default StyleSheet.create({
     flexDirection: "column",
     padding: 15,
     borderRadius: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    borderWidth: .31,
+    borderColor:"3B6790"
   },
   priorityNote: {
     borderColor: "#F26B0F",
@@ -139,12 +140,12 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 0.41,
-    borderColor: "#888",
+    borderColor: "#48A6A7",
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
     marginTop: 5,
-    width: 200
+    width: 100
   },
   timeText: {
     fontSize: 12,
@@ -170,13 +171,22 @@ export default StyleSheet.create({
     width: "70%",
     height: 60,
     justifyContent: "center",
-    alignItems: "center",
-    fontSize: 20,
-    color: "white"
+    alignItems: "center"
   },
   addNoteText: {
     color: "white",
     fontSize: 20
+  },
+  voiceNoteButton: {
+    backgroundColor: "#7360DF",
+    padding: 4,
+    borderRadius: 30,
+    alignSelf: "center",
+    marginVertical: 20,
+    width: 60,
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center"
   },
   addModeContainer: {
     position: "absolute",

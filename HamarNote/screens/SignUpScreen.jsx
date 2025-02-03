@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { 
-  View, Text, TextInput, TouchableOpacity, StyleSheet, Alert 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Image
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -21,6 +21,8 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+           <Image source={require("../images/signUpImage.png")} style={styles.logo} />
+      
       <Text style={styles.title}>Sign Up</Text>
       <TextInput 
         style={styles.input}
@@ -53,6 +55,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     backgroundColor: "#f4f4f4",
+  },
+  logo:{
+    width:"80%",
+    height:200,
+    marginHorizontal:60,
+    borderRadius:30,
+
   },
   title: {
     fontSize: 24,

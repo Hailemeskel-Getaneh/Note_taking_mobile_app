@@ -12,9 +12,10 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
+import { Audio } from "expo-av";
 import styles from "../screens/noteScreenStyles";
 
-const noteColors = ["#F3F3F3", "#F2EFE7"];
+const noteColors = ["#F3F3F3", "#F5F5F5"];
 
 export default function NoteScreen({ navigation }) {
   // Main states
@@ -25,7 +26,6 @@ export default function NoteScreen({ navigation }) {
   const [darkMode, setDarkMode] = useState(false);
   // Only two filter categories now: "all" and "favorites"
   const [category, setCategory] = useState("all");
-
   const [pinned, setPinned] = useState(false);
 
   // Add-note states
@@ -46,6 +46,9 @@ export default function NoteScreen({ navigation }) {
 
   // New state for sort/clear modal (triggered by vertical dots in category navigation)
   const [sortClearModalVisible, setSortClearModalVisible] = useState(false);
+
+  // New state for voice recording
+  const [recording, setRecording] = useState(null);
 
   useEffect(() => {
     loadNotes();
@@ -93,6 +96,7 @@ export default function NoteScreen({ navigation }) {
 
   // Dark mode and sort toggles
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
     setSortClearModalVisible(false);
@@ -106,9 +110,9 @@ export default function NoteScreen({ navigation }) {
         { text: "Cancel", style: "cancel" },
         {
           text: "Clear",
-          onPress: () => {
+          onPress: async () => {
             setNotes([]);
-            saveNotes([]);
+            await saveNotes([]);
             setSortClearModalVisible(false);
           },
           style: "destructive"
@@ -146,9 +150,60 @@ export default function NoteScreen({ navigation }) {
     setAddMode(false);
   };
 
+  // Alternative Voice note functionality using instance-based API
+  const startRecording = async () => {
+    try {
+      const { status } = await Audio.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission required", "Please grant audio recording permissions.");
+        return;
+      }
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true
+      });
+      const newRecording = new Audio.Recording();
+      await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      await newRecording.startAsync();
+      console.log("Recording started...");
+      setRecording(newRecording);
+    } catch (error) {
+      console.error("Failed to start recording:", error);
+      Alert.alert("Error", "Unable to start recording.");
+    }
+  };
+
+  const stopRecording = async () => {
+    try {
+      if (!recording) return;
+      console.log("Stopping recording...");
+      await recording.stopAndUnloadAsync();
+      const uri = recording.getURI();
+      console.log("Recording URI:", uri);
+      setRecording(null);
+      if (uri) {
+        const noteWithDate = {
+          text: "", // No text note when recording a voice note
+          voiceUri: uri,
+          date: new Date().toISOString(),
+          pinned: pinned,
+          favorite: false
+        };
+        const updated = [...notes, noteWithDate];
+        setNotes(updated);
+        await saveNotes(updated);
+        Alert.alert("Voice Note Saved", "Your voice note has been saved.");
+      } else {
+        Alert.alert("Error", "Voice note URI not available. Your voice note has not been saved.");
+      }
+    } catch (error) {
+      console.error("Failed to stop recording:", error);
+      Alert.alert("Error", "Your voice note has not been saved.");
+    }
+  };
+
   // Action menu functions
   const openActionMenu = (index, event) => {
-    // Get the press coordinates from the onPressIn event:
     const { pageX, pageY } = event.nativeEvent;
     setActionMenuPosition({ x: pageX, y: pageY });
     setSelectedNoteIndex(index);
@@ -258,9 +313,9 @@ export default function NoteScreen({ navigation }) {
         </View>
 
         {/* Expanded Note */}
-        <View style={[styles.expandedContainer, { backgroundColor: bgColor }]}>
+        <View style={[styles.expandedContainer, darkMode && { backgroundColor: '#333', borderColor:'#5B913B' }]}>
           <View style={styles.noteHeader}>
-            <Text style={[styles.noteDate, darkMode && { color: "#ccc" }]}>
+            <Text style={[styles.noteDate, darkMode && { color: "#fff" }]}>
               {getDateFromStr(note.date)}
             </Text>
             <TouchableOpacity
@@ -270,7 +325,7 @@ export default function NoteScreen({ navigation }) {
               <Feather
                 name="heart"
                 size={20}
-                color={note.favorite ? "#e91e63" : darkMode ? "#fff" : "#555"}
+                color={note.favorite ? "#e91e63" : darkMode ? "white" : "#555"}
               />
             </TouchableOpacity>
           </View>
@@ -290,17 +345,18 @@ export default function NoteScreen({ navigation }) {
           {/* Cancel and Save buttons */}
           <View style={styles.expandedActions}>
             <TouchableOpacity onPress={collapseNote} style={styles.expandedButton}>
-              <Text style={styles.expandedButtonText}>Cancel</Text>
+              <Text style={[styles.expandedButtonText, darkMode &&{color:'#fff'}]}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={saveExpandedNote} style={styles.expandedButton}>
-              <Text style={styles.expandedButtonText}>Save</Text>
+              <Text style={[styles.expandedButtonText, darkMode &&{color:"#fff"}]}>Save</Text>
+
             </TouchableOpacity>
           </View>
 
           {/* Time display */}
           <View style={styles.timeContainer}>
             <Feather name="clock" size={16} color={darkMode ? "#fff" : "#555"} />
-            <Text style={[styles.timeText, darkMode && { color: "#fff" }]}>
+            <Text style={[styles.timeText, darkMode && { color: "white" }]}>
               {getTimeFromStr(note.date)}
             </Text>
           </View>
@@ -322,7 +378,6 @@ export default function NoteScreen({ navigation }) {
           onPress={() => setHamburgerMenuVisible((prev) => !prev)}
           style={styles.hamburgerButton}
         >
-          {/* Toggle between menu and close icon */}
           <Feather name={hamburgerMenuVisible ? "x" : "menu"} size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -333,13 +388,13 @@ export default function NoteScreen({ navigation }) {
         <TextInput
           style={[styles.searchInput, darkMode && { color: "#fff" }]}
           placeholder="Search notes..."
-          placeholderTextColor={darkMode ? "#bbb" : "#888"}
+          placeholderTextColor={darkMode ? "#fff" : "#33367"}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
       </View>
 
-      {/* Category navigation: "All", "Favorites", and the vertical dots button */}
+      {/* Category navigation */}
       <View style={styles.categoryContainer}>
         <TouchableOpacity
           onPress={() => setCategory("all")}
@@ -359,9 +414,7 @@ export default function NoteScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Vertical dots button for sort/clear options.
-            No border or background applied via the verticalDots style. */}
-        <TouchableOpacity onPress={() => setSortClearModalVisible(true)} style={styles.verticalDots}>
+        <TouchableOpacity onPress={() => setSortClearModalVisible(true)} style={[styles.verticalDots, darkMode && {color:'#fff'}]}>
           <Text style={[styles.categoryText, { fontSize: 24 }]}>⋮</Text>
         </TouchableOpacity>
       </View>
@@ -372,7 +425,6 @@ export default function NoteScreen({ navigation }) {
           <Text style={styles.noNotesText}>No notes found.</Text>
         ) : (
           filteredNotes.map((note, index) => {
-            // For dark mode, override note item background and text colors
             const baseBgColor =
               note.pinned ? "#F26B0F" : noteColors[index % noteColors.length];
             const bgColor = darkMode ? "#333" : baseBgColor;
@@ -412,7 +464,7 @@ export default function NoteScreen({ navigation }) {
                   </View>
                 </TouchableOpacity>
 
-                {/* Three-dots action menu button. We use onPressIn to capture tap coordinates */}
+                {/* Three-dots action menu button */}
                 <TouchableOpacity
                   onPressIn={(event) => openActionMenu(index, event)}
                   style={[styles.moreButton, { marginLeft: 10 }]}
@@ -431,15 +483,23 @@ export default function NoteScreen({ navigation }) {
         )}
       </ScrollView>
 
-      {/* Footer (if needed) */}
       <View style={styles.footer}>
         {/* Example: <Text style={styles.footerText}>© 2025 Hamar Notes</Text> */}
       </View>
 
-      {/* "Add Note" button */}
-      <TouchableOpacity onPress={startAddMode} style={styles.addNoteButton}>
-        <Text style={styles.addNoteText}>Add Note</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", padding: 10 }}>
+
+        <TouchableOpacity onPress={startAddMode} style={styles.addNoteButton}>
+          <Text style={styles.addNoteText}>Add Note</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={recording ? stopRecording : startRecording}
+          style={styles.voiceNoteButton}
+        >
+          <Feather name={recording ? "stop-circle" : "mic"} size={24} color="white" />
+        </TouchableOpacity>
+      </View>
 
       {/* Add Note mode */}
       {addMode && (
@@ -463,23 +523,23 @@ export default function NoteScreen({ navigation }) {
             <TouchableOpacity onPress={cancelAddMode} style={styles.addModeActionButton}>
               <Text style={styles.addModeActionText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={confirmAddNote} style={styles.addModeActionButton}>
-              <Text style={styles.addModeActionText}>Save</Text>
+            <TouchableOpacity onPress={confirmAddNote} style={[styles.addModeActionButton, darkMode && {color:"#fff"}]}>
+              <Text style={[styles.addModeActionText, darkMode &&{color:"#fff"}]}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
 
-      {/* Action Menu (for Edit, Share, Copy, Delete) positioned based on tap coordinates */}
+      {/* Action Menu (for Edit, Share, Copy, Delete) */}
       {actionMenuVisible && selectedNoteIndex !== null && (
         <TouchableOpacity style={styles.actionMenuOverlay} onPress={closeActionMenu}>
           <View
             style={[
               styles.actionMenu,
               {
-                left: actionMenuPosition.x - 100, // adjust offset as needed
-                top: actionMenuPosition.y + 10,   // adjust offset as needed
-              }
+                left: actionMenuPosition.x - 100,
+                top: actionMenuPosition.y + 10
+              }, darkMode && {backgroundColor:'#333'}
             ]}
           >
             <TouchableOpacity
@@ -489,20 +549,20 @@ export default function NoteScreen({ navigation }) {
               }}
               style={styles.actionMenuItem}
             >
-              <Feather name="edit" size={18} color="#333" />
-              <Text style={styles.actionMenuItemText}>Edit</Text>
+              <Feather name="edit" size={18} color="#333"  />
+              <Text style={[styles.actionMenuItemText, darkMode && {color:'#fff'}]}>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => shareNote(notes[selectedNoteIndex])} style={styles.actionMenuItem}>
               <Feather name="share-2" size={18} color="#333" />
-              <Text style={styles.actionMenuItemText}>Share</Text>
+              <Text style={[styles.actionMenuItemText, darkMode && {color:'#fff'}]}>Share</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => copyNote(notes[selectedNoteIndex])} style={styles.actionMenuItem}>
               <Feather name="copy" size={18} color="#333" />
-              <Text style={styles.actionMenuItemText}>Copy</Text>
+              <Text style={[styles.actionMenuItemText, darkMode && {color:'#fff'}]}>Copy</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => deleteNote(selectedNoteIndex)} style={styles.actionMenuItem}>
               <Feather name="trash-2" size={18} color="#333" />
-              <Text style={styles.actionMenuItemText}>Delete</Text>
+              <Text style={[styles.actionMenuItemText, darkMode && {color:'#fff'}]}>Delete</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -529,7 +589,7 @@ export default function NoteScreen({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity style={styles.modalItem}>
               <Feather name="settings" size={18} color="#333" />
-              <Text style={styles.modalItemText}>Settings</Text>
+              <Text onPress={() => navigation.navigate("Settings")} style={styles.modalItemText}>Settings</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

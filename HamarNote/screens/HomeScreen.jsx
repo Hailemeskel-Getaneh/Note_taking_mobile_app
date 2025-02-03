@@ -4,6 +4,7 @@ import {
 } from "react-native";
 
 // Function to get dynamic greeting based on the Ethiopian time (GMT +3)
+
 const getGreeting = () => {
   const ethiopianTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000); // Adding 3 hours
   const hour = ethiopianTime.getHours();
@@ -12,6 +13,7 @@ const getGreeting = () => {
   if (hour < 12) return "Good Morning"; 
   if (hour < 18) return "Good Afternoon"; 
   return "Good Evening"; 
+
 };
 
 export default function HomeScreen({ navigation }) {
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 15,
-    marginTop: 70,
+    marginTop: 20,
     backgroundColor: "#7360DF",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
   homeImage: {
     width: 320,
-    height: 420,
+    height: 450,
     borderRadius: 30,
     marginTop: 30,
   },
