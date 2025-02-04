@@ -17,7 +17,7 @@ const ContactScreen = () => {
         {/* Email Contact */}
         <TouchableOpacity style={styles.contactItem} onPress={openEmail}>
           <Ionicons name="mail-outline" size={24} color="#4A90E2" />
-          <Text style={styles.contactText}>Email: Hamar1627@gmail.com</Text>
+          <Text style={styles.contactText}>Email: hailegetaneh1221@gmail.com</Text>
         </TouchableOpacity>
 
         {/* Phone Contact */}
