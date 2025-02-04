@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     marginTop: 125,
-    // backgroundColor: "#7360DF",
     width: "100%",
   },
   footerText: {
