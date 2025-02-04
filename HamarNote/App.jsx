@@ -22,14 +22,12 @@ export default function App() {
           options={{ headerShown: false }}
         />
         
-        {/* Note Screen */}
         <Stack.Screen
           name="Note"
           component={NoteScreen}
           options={{ headerShown: false }}
         />
         
-        {/* About Screen */}
         <Stack.Screen
           name="About"
           component={AboutScreen}

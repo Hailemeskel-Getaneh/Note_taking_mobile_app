@@ -1,5 +1,4 @@
-// SettingsScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,18 +6,53 @@ import {
   Switch,
   Alert,
   StyleSheet,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
 
 export default function SettingsScreen({ navigation }) {
-  // Local states for different settings. In a production app, consider using context or a global state.
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [noteItemColor, setNoteItemColor] = useState("#F3F3F3"); // Default note item color
 
-  // Function to clear all notes from AsyncStorage.
+  // Predefined colors for note items
+  const noteItemColors = [
+    "#F3F3F3", // Light Gray
+    "#FFF5E0", // Light Yellow
+    "#E3F2FD", // Light Blue
+    "#FFE4E1", // Light Pink
+    "#E0FFFF", // Light Cyan
+  ];
+
+  // Load saved note item color from AsyncStorage
+  useEffect(() => {
+    const loadNoteItemColor = async () => {
+      try {
+        const savedColor = await AsyncStorage.getItem("noteItemColor");
+        if (savedColor) {
+          setNoteItemColor(savedColor);
+        }
+      } catch (error) {
+        console.error("Error loading note item color:", error);
+      }
+    };
+    loadNoteItemColor();
+  }, []);
+
+  // Save selected note item color to AsyncStorage
+  const saveNoteItemColor = async (color) => {
+    try {
+      await AsyncStorage.setItem("noteItemColor", color);
+      setNoteItemColor(color);
+      Alert.alert("Success", "Note item color updated successfully!");
+    } catch (error) {
+      console.error("Error saving note item color:", error);
+      Alert.alert("Error", "Unable to update note item color.");
+    }
+  };
+
+  // Clear all notes from AsyncStorage
   const clearAllNotes = async () => {
     Alert.alert(
       "Clear All Notes",
@@ -35,28 +69,20 @@ export default function SettingsScreen({ navigation }) {
               Alert.alert("Error", "Unable to clear notes.");
             }
           },
-          style: "destructive"
-        }
+          style: "destructive",
+        },
       ]
     );
   };
 
-  // Toggle dark mode.
+  // Toggle dark mode
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
-    // In a production app, update a theme context or global store here.
   };
 
-  // Toggle notification preferences.
+  // Toggle notification preferences
   const toggleNotifications = () => {
     setNotificationsEnabled((prev) => !prev);
-    // In a production app, update the notification settings accordingly.
-  };
-
-  // Change language selection.
-  const changeLanguage = (language) => {
-    setSelectedLanguage(language);
-    // In a production app, trigger localization updates here.
   };
 
   return (
@@ -81,6 +107,26 @@ export default function SettingsScreen({ navigation }) {
           </Text>
           <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
         </View>
+
+        {/* Note Item Color Picker */}
+        <View style={styles.colorPickerContainer}>
+          <Text style={[styles.settingText, isDarkMode && styles.darkText]}>
+            Note Item Color
+          </Text>
+          <View style={styles.colorOptions}>
+            {noteItemColors.map((color, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.colorOption,
+                  { backgroundColor: color },
+                  noteItemColor === color && styles.selectedColorOption,
+                ]}
+                onPress={() => saveNoteItemColor(color)}
+              />
+            ))}
+          </View>
+        </View>
       </View>
 
       {/* Notifications Section */}
@@ -93,36 +139,6 @@ export default function SettingsScreen({ navigation }) {
             Enable Notifications
           </Text>
           <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
-        </View>
-      </View>
-
-      {/* Language Section */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
-          Language
-        </Text>
-        <View style={styles.languageContainer}>
-          {["English", "Amharic", "Tigrigna"].map((language) => (
-            <TouchableOpacity
-              key={language}
-              style={[
-                styles.languageOption,
-                selectedLanguage === language && styles.activeLanguageOption,
-                isDarkMode && styles.darkLanguageOption
-              ]}
-              onPress={() => changeLanguage(language)}
-            >
-              <Text
-                style={[
-                  styles.languageText,
-                  selectedLanguage === language && styles.activeLanguageText,
-                  isDarkMode && styles.darkText
-                ]}
-              >
-                {language}
-              </Text>
-            </TouchableOpacity>
-          ))}
         </View>
       </View>
 
@@ -154,7 +170,7 @@ export default function SettingsScreen({ navigation }) {
           Contact: hailegetaneh1221@gmail.com
         </Text>
         <Text style={[styles.aboutText, isDarkMode && styles.darkText]}>
-          Website: https://hailemeskel.netlify.app
+          Website: 'https://hailemeskel.netlify.app'
         </Text>
       </View>
     </ScrollView>
@@ -164,10 +180,10 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E3F2FD"
+    backgroundColor: "#E3F2FD",
   },
   darkContainer: {
-    backgroundColor: "#121212"
+    backgroundColor: "#121212",
   },
   header: {
     flexDirection: "row",
@@ -176,23 +192,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 20
+    marginTop: 20,
   },
   headerTitle: {
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
-    fontFamily: "sans-serif"
+    fontFamily: "sans-serif",
   },
   section: {
     marginTop: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "600",
     marginBottom: 10,
-    color: "#333"
+    color: "#333",
   },
   settingItem: {
     flexDirection: "row",
@@ -201,61 +217,54 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   darkSettingItem: {
-    backgroundColor: "#333"
+    backgroundColor: "#333",
   },
   settingText: {
     fontSize: 16,
     color: "#333",
-    fontFamily: "sans-serif"
+    fontFamily: "sans-serif",
   },
   darkText: {
-    color: "#fff"
+    color: "#fff",
   },
   settingButton: {
     backgroundColor: "#7360DF",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginBottom: 10
+    marginBottom: 10,
   },
   settingButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontFamily: "sans-serif"
+    fontFamily: "sans-serif",
   },
-  languageContainer: {
+  colorPickerContainer: {
+    marginBottom: 20,
+  },
+  colorOptions: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    flexWrap: "wrap",
+    marginTop: 10,
   },
-  languageOption: {
-    flex: 1,
-    padding: 10,
-    marginHorizontal: 5,
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-    alignItems: "center"
+  colorOption: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    margin: 5,
+    borderWidth: 2,
+    borderColor: "transparent",
   },
-  activeLanguageOption: {
-    backgroundColor: "#7360DF"
-  },
-  darkLanguageOption: {
-    backgroundColor: "#333"
-  },
-  languageText: {
-    fontSize: 16,
-    color: "#333",
-    fontFamily: "sans-serif"
-  },
-  activeLanguageText: {
-    color: "#fff"
+  selectedColorOption: {
+    borderColor: "#7360DF",
   },
   aboutText: {
     fontSize: 16,
     marginBottom: 5,
     color: "#333",
-    fontFamily: "sans-serif"
-  }
+    fontFamily: "sans-serif",
+  },
 });

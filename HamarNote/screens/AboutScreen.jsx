@@ -46,6 +46,9 @@ const AboutScreen = () => {
         >
           <Text style={styles.buttonText}>Visit Our Website</Text>
         </TouchableOpacity>
+         <View style={styles.footer}>
+                <Text style={styles.footerText}>© 2025 Hamar Notes</Text>
+              </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -100,6 +103,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
+  },
+  footer: {
+    padding: 10,
+    alignItems: "center",
+    marginTop: 125,
+    // backgroundColor: "#7360DF",
+    width: "100%",
+  },
+  footerText: {
+    fontSize: 14,
+    color: "#333",
+    fontFamily: "sans-serif",
   },
 });
 
