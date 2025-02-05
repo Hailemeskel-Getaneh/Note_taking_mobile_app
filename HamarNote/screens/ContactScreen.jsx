@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Linking } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // To use icons (make sure to install expo-icons)
+import { Ionicons } from '@expo/vector-icons'; 
 
 const ContactScreen = () => {
   const openEmail = () => Linking.openURL('mailto:Hamar1627@gmail.com');
@@ -14,19 +14,16 @@ const ContactScreen = () => {
           For any inquiries, feedback, or support, feel free to reach out to us!
         </Text>
         
-        {/* Email Contact */}
         <TouchableOpacity style={styles.contactItem} onPress={openEmail}>
           <Ionicons name="mail-outline" size={24} color="#4A90E2" />
           <Text style={styles.contactText}>Email: hailegetaneh1221@gmail.com</Text>
         </TouchableOpacity>
 
-        {/* Phone Contact */}
         <TouchableOpacity style={styles.contactItem} onPress={openPhone}>
           <Ionicons name="call-outline" size={24} color="#4A90E2" />
           <Text style={styles.contactText}>Phone: +251 956 319 463</Text>
         </TouchableOpacity>
 
-        {/* Address */}
         <View style={styles.contactItem}>
           <Ionicons name="location-outline" size={24} color="#4A90E2" />
           <Text style={styles.contactText}>Address: Debre Birhan University, Debre Birhan, Ethiopia</Text>
