@@ -8,13 +8,14 @@ import {
   TextInput,
   Alert,
   Share,
-  StyleSheet,
 } from "react-native";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Feather } from "@expo/vector-icons";
+import { Feather,MaterialCommunityIcons } from "@expo/vector-icons";
+import { Icon } from "react-native-ionicons";
 import * as Clipboard from "expo-clipboard";
-import { Audio } from "expo-av";
-import styles from "./noteScreenStyles"; // Import styles from the separate file
+import styles from "./noteScreenStyles"; 
+import VoiceNote from "./voiceNote";
 
 const noteColors = ["#F3F3F3", "#F5F5F5"];
 
@@ -47,8 +48,6 @@ export default function NoteScreen({ navigation }) {
   // New state for sort/clear modal
   const [sortClearModalVisible, setSortClearModalVisible] = useState(false);
 
-  // New state for voice recording
-  const [recording, setRecording] = useState(null);
 
   useEffect(() => {
     loadNotes();
@@ -149,56 +148,6 @@ export default function NoteScreen({ navigation }) {
     setAddMode(false);
   };
 
-  const startRecording = async () => {
-    try {
-      const { status } = await Audio.requestPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission required", "Please grant audio recording permissions.");
-        return;
-      }
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-      const newRecording = new Audio.Recording();
-      await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-      await newRecording.startAsync();
-      console.log("Recording started...");
-      setRecording(newRecording);
-    } catch (error) {
-      console.error("Failed to start recording:", error);
-      Alert.alert("Error", "Unable to start recording.");
-    }
-  };
-
-  const stopRecording = async () => {
-    try {
-      if (!recording) return;
-      console.log("Stopping recording...");
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-      console.log("Recording URI:", uri);
-      setRecording(null);
-      if (uri) {
-        const noteWithDate = {
-          text: "",
-          voiceUri: uri,
-          date: new Date().toISOString(),
-          pinned: pinned,
-          favorite: false,
-        };
-        const updated = [...notes, noteWithDate];
-        setNotes(updated);
-        await saveNotes(updated);
-        Alert.alert("Voice Note Saved", "Your voice note has been saved.");
-      } else {
-        Alert.alert("Error", "Voice note URI not available. Your voice note has not been saved.");
-      }
-    } catch (error) {
-      console.error("Failed to stop recording:", error);
-      Alert.alert("Error", "Your voice note has not been saved.");
-    }
-  };
 
   const openActionMenu = (index, event) => {
     const { pageX, pageY } = event.nativeEvent;
@@ -249,12 +198,15 @@ export default function NoteScreen({ navigation }) {
   };
 
   const toggleFavorite = (index) => {
-    const updated = [...notes];
-    updated[index].favorite = !updated[index].favorite;
-    setNotes(updated);
-    saveNotes(updated);
+    setNotes((prevNotes) => {
+      const updatedNotes = [...prevNotes];
+      updatedNotes[index] = { ...updatedNotes[index], favorite: !updatedNotes[index].favorite };
+      saveNotes(updatedNotes); // Persist to AsyncStorage
+      return updatedNotes;
+    });
   };
-
+  
+  
   const expandNote = (index) => {
     setExpandedNoteIndex(index);
     setExpandedNoteText(notes[index].text);
@@ -424,20 +376,15 @@ export default function NoteScreen({ navigation }) {
                   <Text style={[styles.noteDate, { color: textColor }]}>
                     {getDateFromStr(note.date)}
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => toggleFavorite(index)}
-                    style={[
-                      styles.favoriteButton,
-                      { backgroundColor: note.favorite ? "#e91e63" : "transparent" }
-                    ]}
-                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  >
-                    <Feather
-                      name="heart"
-                      size={20}
-                      color={note.favorite ? "white" : textColor}
-                    />
-                  </TouchableOpacity>
+
+         <TouchableOpacity onPress={() => toggleFavorite(index)}>
+              <MaterialCommunityIcons 
+                name={note.favorite ? "heart" : "heart-outline"} 
+                size={24} 
+                color={note.favorite ? "red" : "black"} 
+              />
+            </TouchableOpacity>
+
                 </View>
 
                 <TouchableOpacity onPress={() => expandNote(index)} style={{ flex: 1 }}>
@@ -472,12 +419,7 @@ export default function NoteScreen({ navigation }) {
           <Text style={styles.addNoteText}>Add Note</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={recording ? stopRecording : startRecording}
-          style={styles.voiceNoteButton}
-        >
-          <Feather name={recording ? "stop-circle" : "mic"} size={24} color="white" />
-        </TouchableOpacity>
+             <VoiceNote/>
       </View>
 
       {addMode && (

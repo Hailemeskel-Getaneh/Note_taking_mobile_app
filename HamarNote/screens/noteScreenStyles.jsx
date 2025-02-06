@@ -120,7 +120,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  favoriteActive: {
+  favoriteActive: { 
     backgroundColor: "transparent", // Ensure no background color
   },
   noteContent: {

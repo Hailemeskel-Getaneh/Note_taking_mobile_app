@@ -3,7 +3,6 @@ import {
   View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView, Animated 
 } from "react-native";
 
-// Function to get dynamic greeting based on the Ethiopian time (GMT +3)
 
 const getGreeting = () => {
   const ethiopianTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000); // Adding 3 hours
@@ -21,7 +20,6 @@ export default function HomeScreen({ navigation }) {
   const [fadeAnim] = useState(new Animated.Value(0)); 
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication state
 
-  // Fade-in animation for greeting message
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -30,13 +28,10 @@ export default function HomeScreen({ navigation }) {
     }).start();
   }, [fadeAnim]);
 
-  // Function to handle "Go to Notes" button click
   const handleGoToNotes = () => {
     if (isAuthenticated) {
-      // If authenticated, navigate to Note Screen
       navigation.navigate("Note");
     } else {
-      // If not authenticated, navigate to SignIn/SignUp Screen
       navigation.navigate("SignIn");
     }
   };
@@ -49,22 +44,18 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.headerIcon}>📝</Text>
       </View>
 
-      {/* Hero Image */}
       <Image style={styles.homeImage} source={require("../images/image1.jpg")} />
 
-      {/* Action Buttons */}
       <TouchableOpacity onPress={handleGoToNotes} style={styles.button}>
         <Text style={styles.buttonText}>Go to Notes</Text>
       </TouchableOpacity>
 
-      {/* Motivational Quote */}
       <View style={styles.quoteContainer}>
         <Text style={styles.quoteText}>
           "The best way to predict the future is to create it."
         </Text>
       </View>
 
-      {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.footerLinks}>
           {/* <TouchableOpacity onPress={() => navigation.navigate("About")} style={styles.footerButton}>
