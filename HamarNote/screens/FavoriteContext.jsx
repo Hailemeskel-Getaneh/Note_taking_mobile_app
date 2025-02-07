@@ -10,9 +10,9 @@ export const FavoritesProvider = ({ children }) => {
       const isAlreadyFavorited = prevFavorites.some(fav => fav.date === note.date);
       
       if (isAlreadyFavorited) {
-        return prevFavorites.filter(fav => fav.date !== note.date); // Remove from favorites
+        return prevFavorites.filter(fav => fav.date !== note.date); // ermove from favorites
       } else {
-        return [...prevFavorites, note]; // Add full note object to favorites
+        return [...prevFavorites, note]; 
       }
     });
   };
