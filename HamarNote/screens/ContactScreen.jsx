@@ -41,8 +41,7 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'center',
-    alignItems: 'flex-start', // Align to the left for a more clean layout
-  },
+    alignItems: 'flex-start', 
   title: {
     fontSize: 28,
     fontWeight: 'bold',
