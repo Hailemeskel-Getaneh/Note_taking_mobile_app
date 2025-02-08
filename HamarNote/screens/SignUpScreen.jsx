@@ -3,10 +3,13 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Alert , Image
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SignUpScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const handleSignUp = async () => {
     if (username && password) {
@@ -37,6 +40,14 @@ export default function SignUpScreen({ navigation }) {
         value={password}
         onChangeText={setPassword}
       />
+
+      <view>
+        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={passwrdContainer}>  
+        <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="#4A90E2" style={eyeIcon} />
+        </TouchableOpacity>
+      </view>
+
+      
       <TouchableOpacity onPress={handleSignUp} style={styles.button}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>

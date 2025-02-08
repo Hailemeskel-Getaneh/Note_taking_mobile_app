@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
-import styles from "./noteScreenStyles"; // Import your styles
+import styles from "./noteScreenStyles"; 
 
 const VoiceNote = () => {
   const [recording, setRecording] = useState(null);
@@ -33,7 +33,6 @@ const VoiceNote = () => {
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
-    // Here you can handle saving the audio file (e.g., upload to server, save locally)
     Alert.alert("Success", "Voice note recorded successfully", [
       { text: "OK", onPress: () => console.log("OK Pressed") }
     ]);
@@ -42,7 +41,7 @@ const VoiceNote = () => {
   return (
     <TouchableOpacity
       onPress={recording ? stopRecording : startRecording}
-      style={styles.voiceNoteButton} // Apply your styles
+      style={styles.voiceNoteButton} 
     >
       <Feather name={recording ? "stop-circle" : "mic"} size={24} color="white" />
     </TouchableOpacity>

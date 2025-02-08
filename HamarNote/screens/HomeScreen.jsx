@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView, Animated 
-} from "react-native";
-
+import { View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView, Animated } from "react-native";
 
 const getGreeting = () => {
-  const ethiopianTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000); // Adding 3 hours
+  const ethiopianTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000);
   const hour = ethiopianTime.getHours();
-  
-  if (hour < 6) return "Good Morning"; 
-  if (hour < 12) return "Good Morning"; 
-  if (hour < 18) return "Good Afternoon"; 
-  return "Good Evening"; 
 
+  if (hour < 6) return "Good Morning";
+  if (hour < 12) return "Good Morning";
+  if (hour < 18) return "Good Afternoon";
+  return "Good Evening";
 };
 
 export default function HomeScreen({ navigation }) {
   const [greeting, setGreeting] = useState(getGreeting());
-  const [fadeAnim] = useState(new Animated.Value(0)); 
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication state
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -38,7 +34,6 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Hamar Notes</Text>
         <Text style={styles.headerIcon}>📝</Text>
@@ -57,21 +52,13 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <View style={styles.footer}>
-        <View style={styles.footerLinks}>
-          {/* <TouchableOpacity onPress={() => navigation.navigate("About")} style={styles.footerButton}>
-            <Text style={styles.footerText}>About</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Contact")} style={styles.footerButton}>
-            <Text style={styles.footerText}>Contact</Text>
-          </TouchableOpacity> */}
-        </View>
+        <View style={styles.footerLinks}></View>
         <Text style={styles.footerText}>© 2025 Hamar Notes</Text>
       </View>
     </SafeAreaView>
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -116,12 +103,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    backgroundColor: "#7360DF", 
+    backgroundColor: "#7360DF",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
-    shadowRadius: 5, 
+    shadowRadius: 5,
     elevation: 5,
   },
   buttonText: {
@@ -145,7 +132,6 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     backgroundColor: "#7360DF",
-
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     justifyContent: "center",
