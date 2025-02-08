@@ -14,18 +14,18 @@ import { Feather } from "@expo/vector-icons";
 export default function SettingsScreen({ navigation }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [noteItemColor, setNoteItemColor] = useState("#F3F3F3"); // Default note item color
+  const [noteItemColor, setNoteItemColor] = useState("#F3F3F3"); // Defualt Note item color
 
-  // Predefined colors for note items
+
   const noteItemColors = [
-    "#F3F3F3", // Light Gray
-    "#FFF5E0", // Light Yellow
-    "#E3F2FD", // Light Blue
-    "#FFE4E1", // Light Pink
-    "#E0FFFF", // Light Cyan
+    "#F3F3F3", 
+    "#FFF5E0", 
+    "#E3F2FD", 
+    "#FFE4E1", 
+    "#E0FFFF", 
   ];
 
-  // Load saved note item color from AsyncStorage
+   
   useEffect(() => {
     const loadNoteItemColor = async () => {
       try {
@@ -40,7 +40,6 @@ export default function SettingsScreen({ navigation }) {
     loadNoteItemColor();
   }, []);
 
-  // Save selected note item color to AsyncStorage
   const saveNoteItemColor = async (color) => {
     try {
       await AsyncStorage.setItem("noteItemColor", color);
@@ -52,7 +51,7 @@ export default function SettingsScreen({ navigation }) {
     }
   };
 
-  // Clear all notes from AsyncStorage
+
   const clearAllNotes = async () => {
     Alert.alert(
       "Clear All Notes",
@@ -75,19 +74,19 @@ export default function SettingsScreen({ navigation }) {
     );
   };
 
-  // Toggle dark mode
+  
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
   };
 
-  // Toggle notification preferences
+  
   const toggleNotifications = () => {
     setNotificationsEnabled((prev) => !prev);
   };
 
   return (
     <ScrollView style={[styles.container, isDarkMode && styles.darkContainer]}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={24} color="#fff" />
@@ -96,7 +95,7 @@ export default function SettingsScreen({ navigation }) {
         <View style={{ width: 24 }} />
       </View>
 
-      {/* Appearance Section */}
+      
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Appearance
@@ -108,7 +107,7 @@ export default function SettingsScreen({ navigation }) {
           <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
         </View>
 
-        {/* Note Item Color Picker */}
+        
         <View style={styles.colorPickerContainer}>
           <Text style={[styles.settingText, isDarkMode && styles.darkText]}>
             Note Item Color
@@ -128,8 +127,6 @@ export default function SettingsScreen({ navigation }) {
           </View>
         </View>
       </View>
-
-      {/* Notifications Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Notifications
@@ -142,7 +139,7 @@ export default function SettingsScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Data Management Section */}
+      
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Data Management
@@ -152,7 +149,7 @@ export default function SettingsScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Developer Info Section */}
+                      
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Developer Info
