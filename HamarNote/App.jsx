@@ -42,11 +42,7 @@ export default function App() {
           name="Contact"
           component={ContactScreen}
           options={{
-<<<<<<< HEAD
             title: "Contact Us", 
-=======
-            title: "Contact Us",
->>>>>>> 29aea2fc617cbfeaf60f07b3e94c79f1e6ba9132
             headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}
