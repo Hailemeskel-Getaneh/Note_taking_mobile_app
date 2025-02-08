@@ -7,11 +7,6 @@ import AboutScreen from './screens/AboutScreen';
 import ContactScreen from './screens/ContactScreen'; 
 import SignInScreen from './screens/SignInScreen'; 
 import SignUpScreen from './screens/SignUpScreen'; 
-=======
-import ContactScreen from './screens/ContactScreen';  
-import SignInScreen from './screens/SignInScreen'; 
-import SignUpScreen from './screens/SignUpScreen';  
->>>>>>> 29aea2fc617cbfeaf60f07b3e94c79f1e6ba9132
 import SettingsScreen from './screens/SettingScreen'
 
 const Stack = createStackNavigator();
