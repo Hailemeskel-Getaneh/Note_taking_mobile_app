@@ -4,16 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import NoteScreen from './screens/noteScreen';
 import AboutScreen from './screens/AboutScreen'; 
-<<<<<<< HEAD
 import ContactScreen from './screens/ContactScreen'; 
 import SignInScreen from './screens/SignInScreen'; 
 import SignUpScreen from './screens/SignUpScreen'; 
-=======
-import ContactScreen from './screens/ContactScreen';  
-import SignInScreen from './screens/SignInScreen'; 
-import SignUpScreen from './screens/SignUpScreen';  
->>>>>>> 29aea2fc617cbfeaf60f07b3e94c79f1e6ba9132
-import SettingsScreen from './screens/SettingScreen'
+import SettingsScreen from './screens/SettingScreen';
 
 const Stack = createStackNavigator();
 
@@ -48,11 +42,7 @@ export default function App() {
           name="Contact"
           component={ContactScreen}
           options={{
-<<<<<<< HEAD
-            title: "Contact Us", 
-=======
             title: "Contact Us",
->>>>>>> 29aea2fc617cbfeaf60f07b3e94c79f1e6ba9132
             headerStyle: { backgroundColor: '#7360DF' },
             headerTintColor: '#fff',
           }}

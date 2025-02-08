@@ -7,6 +7,7 @@ import {
   Alert,
   StyleSheet,
   ScrollView,
+  Linking, // Import Linking to handle URLs
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
@@ -14,18 +15,16 @@ import { Feather } from "@expo/vector-icons";
 export default function SettingsScreen({ navigation }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [noteItemColor, setNoteItemColor] = useState("#F3F3F3"); // Defualt Note item color
-
+  const [noteItemColor, setNoteItemColor] = useState("#F3F3F3"); // Default Note item color
 
   const noteItemColors = [
-    "#F3F3F3", 
-    "#FFF5E0", 
-    "#E3F2FD", 
-    "#FFE4E1", 
-    "#E0FFFF", 
+    "#F3F3F3",
+    "#FFF5E0",
+    "#E3F2FD",
+    "#FFE4E1",
+    "#E0FFFF",
   ];
 
-   
   useEffect(() => {
     const loadNoteItemColor = async () => {
       try {
@@ -51,7 +50,6 @@ export default function SettingsScreen({ navigation }) {
     }
   };
 
-
   const clearAllNotes = async () => {
     Alert.alert(
       "Clear All Notes",
@@ -74,19 +72,23 @@ export default function SettingsScreen({ navigation }) {
     );
   };
 
-  
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
   };
 
-  
   const toggleNotifications = () => {
     setNotificationsEnabled((prev) => !prev);
   };
 
+  const openWebsite = () => {
+    Linking.openURL("https://hailemeskel.netlify.app").catch((err) =>
+      console.error("Failed to open website:", err)
+    );
+  };
+
   return (
     <ScrollView style={[styles.container, isDarkMode && styles.darkContainer]}>
-      
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={24} color="#fff" />
@@ -95,7 +97,7 @@ export default function SettingsScreen({ navigation }) {
         <View style={{ width: 24 }} />
       </View>
 
-      
+      {/* Appearance Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Appearance
@@ -107,7 +109,7 @@ export default function SettingsScreen({ navigation }) {
           <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
         </View>
 
-        
+        {/* Note Item Color Picker */}
         <View style={styles.colorPickerContainer}>
           <Text style={[styles.settingText, isDarkMode && styles.darkText]}>
             Note Item Color
@@ -127,19 +129,8 @@ export default function SettingsScreen({ navigation }) {
           </View>
         </View>
       </View>
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
-          Notifications
-        </Text>
-        <View style={[styles.settingItem, isDarkMode && styles.darkSettingItem]}>
-          <Text style={[styles.settingText, isDarkMode && styles.darkText]}>
-            Enable Notifications
-          </Text>
-          <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
-        </View>
-      </View>
 
-      
+      {/* Data Management Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Data Management
@@ -149,7 +140,7 @@ export default function SettingsScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-                      
+      {/* Developer Info Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, isDarkMode && styles.darkText]}>
           Developer Info
@@ -160,15 +151,32 @@ export default function SettingsScreen({ navigation }) {
         <Text style={[styles.aboutText, isDarkMode && styles.darkText]}>
           Version 1.0.0
         </Text>
-        <Text style={[styles.aboutText, isDarkMode && styles.darkText]}>
-          Developed by Hailemeskel Getaneh
+        <Text
+          style={[
+            styles.aboutText,
+            isDarkMode && styles.darkText,
+            { fontWeight: "bold", fontSize:20 }, // Make the developer name bold
+          ]}
+        >
+          Developed by: Hailemeskel Getaneh
         </Text>
         <Text style={[styles.aboutText, isDarkMode && styles.darkText]}>
           Contact: hailegetaneh1221@gmail.com
         </Text>
         <Text style={[styles.aboutText, isDarkMode && styles.darkText]}>
-          Website: 'https://hailemeskel.netlify.app'
+          Phone: 09 56 31 94 63
         </Text>
+        <TouchableOpacity onPress={openWebsite}>
+          <Text
+            style={[
+              styles.aboutText,
+              isDarkMode && styles.darkText,
+              { color: "#7360DF", textDecorationLine: "underline" }, // Style the website link
+            ]}
+          >
+            Website: https://hailemeskel.netlify.app
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

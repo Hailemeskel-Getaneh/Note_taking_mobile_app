@@ -188,6 +188,15 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+voiceNotePlayButton: {
+  flexDirection: "row",
+  alignItems: "center",
+  padding: 10,
+},
+voiceNoteText: {
+  marginLeft: 10,
+  fontSize: 16,
+},
   addModeContainer: {
     position: "absolute",
     top: 0,

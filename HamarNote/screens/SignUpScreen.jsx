@@ -41,11 +41,11 @@ export default function SignUpScreen({ navigation }) {
         onChangeText={setPassword}
       />
 
-      <view>
-        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={passwrdContainer}>  
-        <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="#4A90E2" style={eyeIcon} />
+      <View >
+        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.passwrdContainer}>  
+        {/* <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="#4A90E2" style={styles.eyeIcon} /> */}
         </TouchableOpacity>
-      </view>
+      </View>
 
       
       <TouchableOpacity onPress={handleSignUp} style={styles.button}>
