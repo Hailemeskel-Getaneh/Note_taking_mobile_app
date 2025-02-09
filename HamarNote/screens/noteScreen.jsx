@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import styles from "./noteScreenStyles";
-import VoiceNote from "./voiceNote";
+import VoiceNote from "../components/voiceNote";
 import { Header } from "../components/NoteHeader";
 import { SearchBar } from "../components/NoteSearchBar";
 import { CategoryFilter } from "../components/NoteCategoryFilter";

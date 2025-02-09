@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
-import styles from "./noteScreenStyles";
+import styles from "../screens/noteScreenStyles";
 
 const VoiceNote = ({ onSave }) => {
   const [recording, setRecording] = useState(null);
