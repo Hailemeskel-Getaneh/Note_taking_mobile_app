@@ -28,6 +28,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         
+        
         <Stack.Screen
           name="About"
           component={AboutScreen}
